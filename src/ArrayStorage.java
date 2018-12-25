@@ -27,17 +27,17 @@ public class ArrayStorage {
         int i = getIndex(r.getUuid());
         if (i != -1) {
             System.out.println("Resume already in storage.");
-        } else if (i >= storage.length) {
+        } else if (size >= storage.length) {
             System.out.println("Not enough space in storage.");
         } else {
-            storage[i] = r;
+            storage[size] = r;
             this.size += 1;
         }
     }
 
     public Resume get(String uuid) {
         int i = getIndex(uuid);
-        if (i == -1) {
+        if (i != -1) {
             return storage[i];
         } else {
             System.out.println("Resume not found.");
