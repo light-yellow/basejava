@@ -1,3 +1,7 @@
+package storage;
+
+import model.Resume;
+
 import java.util.Arrays;
 
 /**
@@ -24,8 +28,8 @@ public class ArrayStorage {
     }
 
     public void save(Resume r) {
-        int i = getIndex(r.getUuid());
-        if (i != -1) {
+        int index = getIndex(r.getUuid());
+        if (index != -1) {
             System.out.println("Resume already in storage.");
         } else if (size >= storage.length) {
             System.out.println("Not enough space in storage.");
@@ -36,9 +40,9 @@ public class ArrayStorage {
     }
 
     public Resume get(String uuid) {
-        int i = getIndex(uuid);
-        if (i != -1) {
-            return storage[i];
+        int index = getIndex(uuid);
+        if (index != -1) {
+            return storage[index];
         } else {
             System.out.println("Resume not found.");
             return null;
@@ -46,9 +50,9 @@ public class ArrayStorage {
     }
 
     public void delete(String uuid) {
-        int i = getIndex(uuid);
-        if (i != -1) {
-            storage[i] = storage[this.size - 1];
+        int index = getIndex(uuid);
+        if (index != -1) {
+            storage[index] = storage[this.size - 1];
             storage[this.size - 1] = null;
             this.size -= 1;
         } else {
@@ -58,9 +62,9 @@ public class ArrayStorage {
 
     public void update(Resume r)
     {
-        int i = getIndex(r.getUuid());
-        if (i != -1) {
-            storage[i] = r;
+        int index = getIndex(r.getUuid());
+        if (index != -1) {
+            storage[index] = r;
         } else {
             System.out.println("Resume not found.");
         }
