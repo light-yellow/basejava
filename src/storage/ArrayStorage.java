@@ -6,22 +6,20 @@ import java.util.Arrays;
 
 public class ArrayStorage extends AbstractArrayStorage{
 
-    int getIndex(String uuid) {
+    protected int getIndex(String uuid) {
         for (int i = 0; i < this.size; i += 1) {
-            if (uuid.equals(storage[i].getUuid())) {
+            if (uuid.equals(this.storage[i].getUuid())) {
                 return i;
             }
         }
         return -1;
     }
 
-    public void insert(Resume r) {
+    public void insertAtIndex(Resume r, int index) {
         this.storage[size] = r;
-        this.size += 1;
     }
 
     public void deleteAtIndex(int index) {
-        storage[index] = storage[this.size - 1];
-        storage[this.size - 1] = null;
+        this.storage[index] = this.storage[this.size - 1];
     }
 }

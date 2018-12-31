@@ -10,32 +10,32 @@ public abstract class AbstractArrayStorage implements Storage {
 
     protected abstract int getIndex(String uuid);
 
-    protected abstract void insert(Resume r);
+    protected abstract void insertAtIndex(Resume r, int index);
 
     protected abstract void deleteAtIndex(int index);
 
     public void clear() {
-        for (int i = 0; i < this.size; i += 1) {
-            this.storage[i] = null;
-        }
+        Arrays.fill(this.storage, 0, this.size, null);
         this.size = 0;
     }
 
     public void save(Resume r) {
         int index = getIndex(r.getUuid());
-        if (index != -1) {
+        if (index >= 0) {
             System.out.println("Resume with id '" + r.getUuid() + "' is already in storage.");
-        } else if (this.size >= this.storage.length) {
+        } else if (this.size >= STORAGE_LIMIT) {
             System.out.println("Cannot save: not enough space in storage.");
         } else {
-            insert(r);
+            insertAtIndex(r, index);
+            this.size += 1;
         }
     }
 
     public void delete(String uuid) {
         int index = getIndex(uuid);
-        if (index != -1) {
+        if (index >= 0) {
             deleteAtIndex(index);
+            this.storage[this.size - 1] = null;
             this.size -= 1;
         } else {
             System.out.println("Resume with id '" + uuid + "' was not found.");
@@ -44,7 +44,7 @@ public abstract class AbstractArrayStorage implements Storage {
 
     public Resume get(String uuid) {
         int index = getIndex(uuid);
-        if (index != -1) {
+        if (index >= 0) {
             return this.storage[index];
         } else {
             System.out.println("Resume with id '" + uuid + "' was not found.");
@@ -55,7 +55,7 @@ public abstract class AbstractArrayStorage implements Storage {
     public void update(Resume r)
     {
         int index = getIndex(r.getUuid());
-        if (index != -1) {
+        if (index >= 0) {
             this.storage[index] = r;
         } else {
             System.out.println("Resume with id '" + r.getUuid() + "' was not found.");

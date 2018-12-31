@@ -5,22 +5,17 @@ import model.Resume;
 import java.util.Arrays;
 
 public class SortedArrayStorage extends AbstractArrayStorage {
-    int getIndex(String uuid) {
-        return Arrays.binarySearch(this.storage, new Resume(uuid));
+    protected int getIndex(String uuid) {
+        return Arrays.binarySearch(this.storage, 0, this.size, new Resume(uuid));
     }
 
-    public void insert(Resume r) {
-        this.storage[size] = r;
-        this.size += 1;
-        Arrays.sort(this.storage);
+    public void insertAtIndex(Resume r, int index) {
+        index = -index - 1;
+        System.arraycopy(this.storage, index, this.storage, index + 1, this.size - index);
+        this.storage[index] = r;
     }
 
     public void deleteAtIndex(int index) {
-        while (index + 1 < this.size)
-        {
-            this.storage[index] = this.storage[index + 1];
-            index += 1;
-        }
-        this.storage[index] = null;
+        System.arraycopy(this.storage, index + 1, this.storage, index, this.size - index);
     }
 }
