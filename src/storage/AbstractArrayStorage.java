@@ -6,11 +6,11 @@ import java.util.Arrays;
 public abstract class AbstractArrayStorage implements Storage {
     private static final int STORAGE_LIMIT = 10000;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
-    protected int size = 0;
+    int size = 0;
 
     protected abstract int getIndex(String uuid);
 
-    protected abstract void insertAtIndex(Resume r, int index);
+    protected abstract void insertAtIndex(Resume resume, int index);
 
     protected abstract void deleteAtIndex(int index);
 
@@ -19,46 +19,46 @@ public abstract class AbstractArrayStorage implements Storage {
         this.size = 0;
     }
 
-    public void save(Resume r) {
-        int index = getIndex(r.getUuid());
+    public void save(Resume resume) {
+        int index = getIndex(resume.getUuid());
         if (index >= 0) {
-            System.out.println("Resume with id '" + r.getUuid() + "' is already in storage.");
+            System.out.println("Resume with id '" + resume.getUuid() + "' is already in storage.");
         } else if (this.size >= STORAGE_LIMIT) {
             System.out.println("Cannot save: not enough space in storage.");
         } else {
-            insertAtIndex(r, index);
+            insertAtIndex(resume, index);
             this.size += 1;
         }
     }
 
     public void delete(String uuid) {
         int index = getIndex(uuid);
-        if (index >= 0) {
+        if (index < 0) {
+            System.out.println("Resume with id '" + uuid + "' was not found.");
+        } else {
             deleteAtIndex(index);
             this.storage[this.size - 1] = null;
             this.size -= 1;
-        } else {
-            System.out.println("Resume with id '" + uuid + "' was not found.");
         }
     }
 
     public Resume get(String uuid) {
         int index = getIndex(uuid);
-        if (index >= 0) {
-            return this.storage[index];
-        } else {
+        if (index < 0) {
             System.out.println("Resume with id '" + uuid + "' was not found.");
             return null;
+        } else {
+            return this.storage[index];
         }
     }
 
-    public void update(Resume r)
+    public void update(Resume resume)
     {
-        int index = getIndex(r.getUuid());
-        if (index >= 0) {
-            this.storage[index] = r;
+        int index = getIndex(resume.getUuid());
+        if (index < 0) {
+            System.out.println("Resume with id '" + resume.getUuid() + "' was not found.");
         } else {
-            System.out.println("Resume with id '" + r.getUuid() + "' was not found.");
+            this.storage[index] = resume;
         }
     }
 
